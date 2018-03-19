@@ -680,21 +680,21 @@ func (pool *TxPool) enqueueTx(hash common.Hash, tx *types.Transaction) (bool, er
 	if pool.queue[from] == nil {
 		pool.queue[from] = newTxList(false)
 	}
-	inserted, old := pool.queue[from].Add(tx, pool.config.PriceBump)
-	if !inserted {
+	pool.queue[from].Add(tx, pool.config.PriceBump)
+	/*if !inserted {
 		// An older transaction was better, discard this
 		queuedDiscardCounter.Inc(1)
 		return false, ErrReplaceUnderpriced
-	}
+	}*/
 	// Discard any previous transaction and mark this
-	if old != nil {
+	/*if old != nil {
 		delete(pool.all, old.Hash())
 		pool.priced.Removed()
 		queuedReplaceCounter.Inc(1)
-	}
+	}*/
 	pool.all[hash] = tx
 	pool.priced.Put(tx)
-	return old != nil, nil
+	return false, nil
 }
 
 // journalTx adds the specified transaction to the local disk journal if it is
@@ -720,7 +720,7 @@ func (pool *TxPool) promoteTx(addr common.Address, hash common.Hash, tx *types.T
 	list := pool.pending[addr]
 
 	inserted, old := list.Add(tx, pool.config.PriceBump)
-	if !inserted {
+	/*if !inserted {
 		// An older transaction was better, discard this
 		delete(pool.all, hash)
 		pool.priced.Removed()
@@ -734,12 +734,12 @@ func (pool *TxPool) promoteTx(addr common.Address, hash common.Hash, tx *types.T
 		pool.priced.Removed()
 
 		pendingReplaceCounter.Inc(1)
-	}
+	}*/
 	// Failsafe to work around direct pending inserts (tests)
-	if pool.all[hash] == nil {
+	/*if pool.all[hash] == nil {
 		pool.all[hash] = tx
 		pool.priced.Put(tx)
-	}
+	}*/
 	// Set the potentially new pending nonce and notify any subsystems of the new tx
 	pool.beats[addr] = time.Now()
 	pool.pendingState.SetNonce(addr, tx.Nonce()+1)
@@ -953,11 +953,11 @@ func (pool *TxPool) promoteExecutables(accounts []common.Address) {
 		}
 	}
 	// If the pending limit is overflown, start equalizing allowances
-	pending := uint64(0)
+	/*pending := uint64(0)
 	for _, list := range pool.pending {
 		pending += uint64(list.Len())
-	}
-	if pending > pool.config.GlobalSlots {
+	}*/
+	/*if pending > pool.config.GlobalSlots {
 		pendingBeforeCap := pending
 		// Assemble a spam order to penalize large transactors first
 		spammers := prque.New()
@@ -1022,9 +1022,9 @@ func (pool *TxPool) promoteExecutables(accounts []common.Address) {
 			}
 		}
 		pendingRateLimitCounter.Inc(int64(pendingBeforeCap - pending))
-	}
+	}*/
 	// If we've queued more transactions than the hard limit, drop oldest ones
-	queued := uint64(0)
+	/*queued := uint64(0)
 	for _, list := range pool.queue {
 		queued += uint64(list.Len())
 	}
@@ -1035,11 +1035,11 @@ func (pool *TxPool) promoteExecutables(accounts []common.Address) {
 			if !pool.locals.contains(addr) { // don't drop locals
 				addresses = append(addresses, addressByHeartbeat{addr, pool.beats[addr]})
 			}
-		}
-		sort.Sort(addresses)
+		}*/
+		//sort.Sort(addresses)
 
 		// Drop transactions until the total is below the limit or only locals remain
-		for drop := queued - pool.config.GlobalQueue; drop > 0 && len(addresses) > 0; {
+		/*for drop := queued - pool.config.GlobalQueue; drop > 0 && len(addresses) > 0; {
 			addr := addresses[len(addresses)-1]
 			list := pool.queue[addr.address]
 
@@ -1061,7 +1061,7 @@ func (pool *TxPool) promoteExecutables(accounts []common.Address) {
 				drop--
 				queuedRateLimitCounter.Inc(1)
 			}
-		}
+		}*/
 	}
 }
 
