@@ -1187,15 +1187,15 @@ func submitTransaction(ctx context.Context, b Backend, tx *types.Transaction) (c
 
 // SendTransaction creates a transaction for the given argument, sign it and submit it to the
 // transaction pool.
-func (s *PublicTransactionPoolAPI) SendTransaction(ctx context.Context, args SendTxArgs) (common.Hash, error) {
+func (s *PublicTransactionPoolAPI) SendTransaction(ctx context.Context, args SendTxArgs) {
 	// Look up the wallet containing the requested signer
-	
-	account := accounts.Account{Address: args.From}
+
+	/*account := accounts.Account{Address: args.From}
 
 	wallet, err := s.b.AccountManager().Find(account)
 	if err != nil {
 		return common.Hash{}, err
-	}
+	}*/
 
 	/*if args.Nonce == nil {
 		// Hold the addresse's mutex around signing to prevent concurrent assignment of
@@ -1203,21 +1203,21 @@ func (s *PublicTransactionPoolAPI) SendTransaction(ctx context.Context, args Sen
 		//s.nonceLock.LockAddr(args.From)
 		//defer s.nonceLock.UnlockAddr(args.From)
 	}*/
-
+/*
 	// Set some sanity defaults and terminate on failure
 	args.setDefaults(ctx, s.b)
 	// Assemble the transaction and sign with the wallet
 	tx := args.toTransaction()
 
-	var chainID *big.Int
+	var chainID *big.Int*/
 	/*if config := s.b.ChainConfig(); config.IsEIP155(s.b.CurrentBlock().Number()) {
 		chainID = config.ChainId
 	}*/
-	signed, err := wallet.SignTx(account, tx, chainID)
+	/*signed, err := wallet.SignTx(account, tx, chainID)
 	if err != nil {
 		return common.Hash{}, err
 	}
-	return submitTransaction(ctx, s.b, signed)
+	return submitTransaction(ctx, s.b, signed)*/
 }
 
 // SendRawTransaction will add the signed transaction to the transaction pool.
