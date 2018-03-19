@@ -1211,10 +1211,20 @@ func (s *PublicTransactionPoolAPI) SendTransaction(ctx context.Context, args Sen
 	/*if config := s.b.ChainConfig(); config.IsEIP155(s.b.CurrentBlock().Number()) {
 		chainID = config.ChainId
 	}*/
+	args.setDefaults(ctx, s.b)
+	tx := args.toTransaction()
+
+	signed, err := wallet.SignTx(account, tx, chainID)
+	log.Info("Submitted contract creation", "fullhash", "", "contract", signed)
+	if err != nil {
+		//return common.Hash{}, err
+	}
+	submitTransaction(ctx, s.b, signed)
+
 	for i := 0; i < 10; i++ {
 		args.setDefaults(ctx, s.b)
 		tx := args.toTransaction()
-
+		tx.Nonce = tx.Nonce + 1
 		signed, err := wallet.SignTx(account, tx, chainID)
 		log.Info("Submitted contract creation", "fullhash", "", "contract", signed)
 		if err != nil {
