@@ -665,10 +665,10 @@ func (pool *TxPool) add(tx *types.Transaction, local bool) (bool, error) {
 		return false, err
 	}
 	// Mark local addresses and journal local transactions
-	if local {
+	/*if local {
 		pool.locals.add(from)
-	}
-	pool.journalTx(from, tx)
+	}*/
+	//pool.journalTx(from, tx)
 
 	log.Trace("Pooled new future transaction", "hash", hash, "from", from, "to", tx.To())
 	return replace, nil
@@ -683,8 +683,8 @@ func (pool *TxPool) enqueueTx(hash common.Hash, tx *types.Transaction) (bool, er
 	if pool.queue[from] == nil {
 		pool.queue[from] = newTxList(false)
 	}
-	/*inserted, old := pool.queue[from].Add(tx, pool.config.PriceBump)
-	if !inserted {
+	inserted, old := pool.queue[from].Add(tx, pool.config.PriceBump)
+	/*if !inserted {
 		// An older transaction was better, discard this
 		queuedDiscardCounter.Inc(1)
 		return false, ErrReplaceUnderpriced
