@@ -1190,7 +1190,7 @@ func submitTransaction(ctx context.Context, b Backend, tx *types.Transaction) (c
 func (s *PublicTransactionPoolAPI) SendTransaction(ctx context.Context, args SendTxArgs) (common.Hash, error) {
 	// Look up the wallet containing the requested signer
 
-	account := accounts.Account{Address: args.From}
+	/*account := accounts.Account{Address: args.From}
 
 	wallet, err := s.b.AccountManager().Find(account)
 	if err != nil {
@@ -1204,12 +1204,12 @@ func (s *PublicTransactionPoolAPI) SendTransaction(ctx context.Context, args Sen
 		//defer s.nonceLock.UnlockAddr(args.From)
 	}*/
 
-	// Set some sanity defaults and terminate on failure
+	/*// Set some sanity defaults and terminate on failure
 	args.setDefaults(ctx, s.b)
 	// Assemble the transaction and sign with the wallet
 	tx := args.toTransaction()
 
-	var chainID *big.Int
+	var chainID *big.Int/*/
 	/*if config := s.b.ChainConfig(); config.IsEIP155(s.b.CurrentBlock().Number()) {
 		chainID = config.ChainId
 	}*/
@@ -1217,7 +1217,6 @@ func (s *PublicTransactionPoolAPI) SendTransaction(ctx context.Context, args Sen
 	if err != nil {
 		return common.Hash{}, err
 	}*/
-	//wallet.SignTx(account, tx, chainID)
 	return common.Hash{}, nil//submitTransaction(ctx, s.b, signed)
 }
 
