@@ -683,7 +683,7 @@ func (pool *TxPool) enqueueTx(hash common.Hash, tx *types.Transaction) (bool, er
 	if pool.queue[from] == nil {
 		pool.queue[from] = newTxList(false)
 	}
-	inserted, old := pool.queue[from].Add(tx, pool.config.PriceBump)
+	pool.queue[from].Add(tx, pool.config.PriceBump)
 	/*if !inserted {
 		// An older transaction was better, discard this
 		queuedDiscardCounter.Inc(1)
