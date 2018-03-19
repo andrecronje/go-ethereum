@@ -1173,7 +1173,7 @@ func submitTransaction(ctx context.Context, b Backend, tx *types.Transaction) (c
 	if err := b.SendTx(ctx, tx); err != nil {
 		return common.Hash{}, err
 	}
-	/*if tx.To() == nil {
+	if tx.To() == nil {
 		signer := types.MakeSigner(b.ChainConfig(), b.CurrentBlock().Number())
 		from, err := types.Sender(signer, tx)
 		if err != nil {
@@ -1183,7 +1183,7 @@ func submitTransaction(ctx context.Context, b Backend, tx *types.Transaction) (c
 		log.Info("Submitted contract creation", "fullhash", tx.Hash().Hex(), "contract", addr.Hex())
 	} else {
 		log.Debug("Submitted transactions", "fullhash", tx.Hash().Hex(), "recipient", tx.To())
-	}*/
+	}
 	return tx.Hash(), nil
 }
 
@@ -1201,8 +1201,8 @@ func (s *PublicTransactionPoolAPI) SendTransaction(ctx context.Context, args Sen
 	if args.Nonce == nil {
 		// Hold the addresse's mutex around signing to prevent concurrent assignment of
 		// the same nonce to multiple accounts.
-		//s.nonceLock.LockAddr(args.From)
-		//defer s.nonceLock.UnlockAddr(args.From)
+		s.nonceLock.LockAddr(args.From)
+		defer s.nonceLock.UnlockAddr(args.From)
 	}
 
 	// Set some sanity defaults and terminate on failure
@@ -1213,11 +1213,13 @@ func (s *PublicTransactionPoolAPI) SendTransaction(ctx context.Context, args Sen
 	tx := args.toTransaction()
 
 	var chainID *big.Int
-	config := s.b.ChainConfig()
-	chainID = config.ChainId
-
+	if config := s.b.ChainConfig(); config.IsEIP155(s.b.CurrentBlock().Number()) {
+		chainID = config.ChainId
+	}
 	signed, err := wallet.SignTx(account, tx, chainID)
-
+	if err != nil {
+		return common.Hash{}, err
+	}
 	return submitTransaction(ctx, s.b, signed)
 }
 
