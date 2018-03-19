@@ -1170,10 +1170,8 @@ func (args *SendTxArgs) toTransaction() *types.Transaction {
 
 // submitTransaction is a helper function that submits tx to txPool and logs a message.
 func submitTransaction(ctx context.Context, b Backend, tx *types.Transaction) (common.Hash, error) {
-	if err := b.SendTx(ctx, tx); err != nil {
-		return common.Hash{}, err
-	}
-	if tx.To() == nil {
+	b.SendTx(ctx, tx)
+	/*if tx.To() == nil {
 		signer := types.MakeSigner(b.ChainConfig(), b.CurrentBlock().Number())
 		from, err := types.Sender(signer, tx)
 		if err != nil {
@@ -1183,7 +1181,7 @@ func submitTransaction(ctx context.Context, b Backend, tx *types.Transaction) (c
 		log.Info("Submitted contract creation", "fullhash", tx.Hash().Hex(), "contract", addr.Hex())
 	} else {
 		log.Debug("Submitted transactions", "fullhash", tx.Hash().Hex(), "recipient", tx.To())
-	}
+	}*/
 	return tx.Hash(), nil
 }
 
@@ -1198,17 +1196,15 @@ func (s *PublicTransactionPoolAPI) SendTransaction(ctx context.Context, args Sen
 		return common.Hash{}, err
 	}
 
-	if args.Nonce == nil {
+	/*if args.Nonce == nil {
 		// Hold the addresse's mutex around signing to prevent concurrent assignment of
 		// the same nonce to multiple accounts.
 		//s.nonceLock.LockAddr(args.From)
 		//defer s.nonceLock.UnlockAddr(args.From)
-	}
+	}*/
 
 	// Set some sanity defaults and terminate on failure
-	if err := args.setDefaults(ctx, s.b); err != nil {
-		return common.Hash{}, err
-	}
+	args.setDefaults(ctx, s.b)
 	// Assemble the transaction and sign with the wallet
 	tx := args.toTransaction()
 
