@@ -635,7 +635,7 @@ func (pool *TxPool) add(tx *types.Transaction, local bool) (bool, error) {
 	}*/
 	// If the transaction is replacing an already pending one, do directly
 	from, _ := types.Sender(pool.signer, tx) // already validated
-	if list := pool.pending[from]; list != nil && list.Overlaps(tx) {
+	/*if list := pool.pending[from]; list != nil && list.Overlaps(tx) {
 		// Nonce already pending, check if required price bump is met
 		inserted, old := list.Add(tx, pool.config.PriceBump)
 		if !inserted {
@@ -658,12 +658,9 @@ func (pool *TxPool) add(tx *types.Transaction, local bool) (bool, error) {
 		go pool.txFeed.Send(TxPreEvent{tx})
 
 		return old != nil, nil
-	}
+	}*/
 	// New transaction isn't replacing a pending one, push into queue
-	replace, err := pool.enqueueTx(hash, tx)
-	if err != nil {
-		return false, err
-	}
+	pool.enqueueTx(hash, tx)
 	// Mark local addresses and journal local transactions
 	if local {
 		pool.locals.add(from)
@@ -671,7 +668,7 @@ func (pool *TxPool) add(tx *types.Transaction, local bool) (bool, error) {
 	pool.journalTx(from, tx)
 
 	log.Trace("Pooled new future transaction", "hash", hash, "from", from, "to", tx.To())
-	return replace, nil
+	return false, nil
 }
 
 // enqueueTx inserts a new transaction into the non-executable transaction queue.
