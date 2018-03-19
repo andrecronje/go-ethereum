@@ -1213,10 +1213,11 @@ func (s *PublicTransactionPoolAPI) SendTransaction(ctx context.Context, args Sen
 	/*if config := s.b.ChainConfig(); config.IsEIP155(s.b.CurrentBlock().Number()) {
 		chainID = config.ChainId
 	}*/
-	_, err := wallet.SignTx(account, tx, chainID)
+	/*signed, err := wallet.SignTx(account, tx, chainID)
 	if err != nil {
 		return common.Hash{}, err
-	}
+	}*/
+	//wallet.SignTx(account, tx, chainID)
 	return common.Hash{}, nil//submitTransaction(ctx, s.b, signed)
 }
 
