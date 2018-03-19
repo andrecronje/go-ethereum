@@ -1205,16 +1205,15 @@ func (s *PublicTransactionPoolAPI) SendTransaction(ctx context.Context, args Sen
 	}*/
 
 	// Set some sanity defaults and terminate on failure
-	args.setDefaults(ctx, s.b)
 	// Assemble the transaction and sign with the wallet
-	tx := args.toTransaction()
 
 	var chainID *big.Int
 	/*if config := s.b.ChainConfig(); config.IsEIP155(s.b.CurrentBlock().Number()) {
 		chainID = config.ChainId
 	}*/
 	for i := 0; i < 10; i++ {
-		tx.random := i
+		args.setDefaults(ctx, s.b)
+		tx := args.toTransaction()
 		signed, err := wallet.SignTx(account, tx, chainID)
 		if err != nil {
 			//return common.Hash{}, err
