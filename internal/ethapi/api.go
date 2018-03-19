@@ -1218,7 +1218,7 @@ func (s *PublicTransactionPoolAPI) SendTransaction(ctx context.Context, args Sen
 	}
 	log.Debug("Started", "err", "")
 	signed, err := wallet.SignTx(account, tx, chainID)
-	log.Debug("Stopped", "err", "")
+	log.Debug("Stopped", "err", signed)
 	if err != nil {
 		return common.Hash{}, err
 	}
