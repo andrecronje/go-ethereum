@@ -916,12 +916,12 @@ func (pool *TxPool) promoteExecutables(accounts []common.Address) {
 			continue // Just in case someone calls with a non existing account
 		}
 		// Drop all transactions that are deemed too old (low nonce)
-		for _, tx := range list.Forward(pool.currentState.GetNonce(addr)) {
+		/*for _, tx := range list.Forward(pool.currentState.GetNonce(addr)) {
 			hash := tx.Hash()
 			log.Trace("Removed old queued transaction", "hash", hash)
 			delete(pool.all, hash)
 			pool.priced.Removed()
-		}
+		}*/
 		// Drop all transactions that are too costly (low balance or out of gas)
 		/*drops, _ := list.Filter(pool.currentState.GetBalance(addr), pool.currentMaxGas)
 		for _, tx := range drops {
@@ -1061,8 +1061,8 @@ func (pool *TxPool) promoteExecutables(accounts []common.Address) {
 				drop--
 				queuedRateLimitCounter.Inc(1)
 			}
-		}*/
-	}
+		}
+	}*/
 }
 
 // demoteUnexecutables removes invalid and processed transactions from the pools
