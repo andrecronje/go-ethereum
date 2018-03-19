@@ -665,10 +665,10 @@ func (pool *TxPool) add(tx *types.Transaction, local bool) (bool, error) {
 		return false, err
 	}
 	// Mark local addresses and journal local transactions
-	if local {
+	/*if local {
 		pool.locals.add(from)
 	}
-	pool.journalTx(from, tx)
+	pool.journalTx(from, tx)*/
 
 	log.Trace("Pooled new future transaction", "hash", hash, "from", from, "to", tx.To())
 	return replace, nil
@@ -780,8 +780,8 @@ func (pool *TxPool) AddRemotes(txs []*types.Transaction) []error {
 
 // addTx enqueues a single transaction into the pool if it is valid.
 func (pool *TxPool) addTx(tx *types.Transaction, local bool) error {
-	//pool.mu.Lock()
-	//defer pool.mu.Unlock()
+	pool.mu.Lock()
+	defer pool.mu.Unlock()
 
 	// Try to inject the transaction and update any state
 	replace, _ := pool.add(tx, local)
