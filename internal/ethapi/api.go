@@ -1194,7 +1194,7 @@ func (s *PublicTransactionPoolAPI) SendTransaction(ctx context.Context, args Sen
 
 	wallet, err := s.b.AccountManager().Find(account)
 	if err != nil {
-		r//eturn common.Hash{}, err
+		//return common.Hash{}, err
 	}
 
 	/*if args.Nonce == nil {
