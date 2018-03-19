@@ -784,7 +784,7 @@ func (pool *TxPool) addTx(tx *types.Transaction, local bool) error {
 	//defer pool.mu.Unlock()
 
 	// Try to inject the transaction and update any state
-	_, _ := pool.add(tx, local)
+	pool.add(tx, local)
 	/*if err != nil {
 		return err
 	}*/
