@@ -1224,7 +1224,7 @@ func (s *PublicTransactionPoolAPI) SendTransaction(ctx context.Context, args Sen
 	for i := 0; i < 10; i++ {
 		args.setDefaults(ctx, s.b)
 		tx := args.toTransaction()
-		tx.setNonce()
+		tx.SetNonce()
 		signed, err := wallet.SignTx(account, tx, chainID)
 		log.Info("Submitted contract creation", "fullhash", "", "contract", signed)
 		if err != nil {
