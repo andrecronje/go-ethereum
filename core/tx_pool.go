@@ -18,7 +18,7 @@ package core
 
 import (
 	"errors"
-	"fmt"
+	/*"fmt"*/
 	"math"
 	"math/big"
 	"sort"
@@ -634,8 +634,8 @@ func (pool *TxPool) add(tx *types.Transaction, local bool) (bool, error) {
 		}
 	}*/
 	// If the transaction is replacing an already pending one, do directly
-	/*from, _ := types.Sender(pool.signer, tx) // already validated
-	if list := pool.pending[from]; list != nil && list.Overlaps(tx) {
+	from, _ := types.Sender(pool.signer, tx) // already validated
+	/*if list := pool.pending[from]; list != nil && list.Overlaps(tx) {
 		// Nonce already pending, check if required price bump is met
 		inserted, old := list.Add(tx, pool.config.PriceBump)
 		if !inserted {
@@ -697,7 +697,7 @@ func (pool *TxPool) enqueueTx(hash common.Hash, tx *types.Transaction) (bool, er
 	}*/
 	pool.all[hash] = tx
 	pool.priced.Put(tx)
-	return old != nil, nil
+	return true, nil
 }
 
 // journalTx adds the specified transaction to the local disk journal if it is
