@@ -719,7 +719,7 @@ func (pool *TxPool) promoteTx(addr common.Address, hash common.Hash, tx *types.T
 	}
 	list := pool.pending[addr]
 
-	inserted, old := list.Add(tx, pool.config.PriceBump)
+	list.Add(tx, pool.config.PriceBump)
 	/*if !inserted {
 		// An older transaction was better, discard this
 		delete(pool.all, hash)
