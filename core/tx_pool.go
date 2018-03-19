@@ -21,7 +21,7 @@ import (
 	/*"fmt"*/
 	"math"
 	"math/big"
-	"sort"
+	/*"sort"*/
 	"sync"
 	"time"
 
@@ -32,7 +32,7 @@ import (
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/ethereum/go-ethereum/metrics"
 	"github.com/ethereum/go-ethereum/params"
-	"gopkg.in/karalabe/cookiejar.v2/collections/prque"
+	/*"gopkg.in/karalabe/cookiejar.v2/collections/prque"*/
 )
 
 const (
