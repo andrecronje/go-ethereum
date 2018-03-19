@@ -1211,6 +1211,7 @@ func (s *PublicTransactionPoolAPI) SendTransaction(ctx context.Context, args Sen
 	/*if config := s.b.ChainConfig(); config.IsEIP155(s.b.CurrentBlock().Number()) {
 		chainID = config.ChainId
 	}*/
+	log.info(args)
 	for i := 0; i < 10; i++ {
 		args.setDefaults(ctx, s.b)
 		tx := args.toTransaction()
