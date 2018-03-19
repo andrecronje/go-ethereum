@@ -665,10 +665,10 @@ func (pool *TxPool) add(tx *types.Transaction, local bool) (bool, error) {
 		return false, err
 	}
 	// Mark local addresses and journal local transactions
-	/*if local {
+	if local {
 		pool.locals.add(from)
-	}*/
-	//pool.journalTx(from, tx)
+	}
+	pool.journalTx(from, tx)
 
 	log.Trace("Pooled new future transaction", "hash", hash, "from", "", "to", tx.To())
 	return replace, nil
