@@ -1214,7 +1214,7 @@ func (s *PublicTransactionPoolAPI) SendTransaction(ctx context.Context, args Sen
 		chainID = config.ChainId
 	}*/
 	for i := 0; i < 10; i++ {
-		args.Nonce = args.Nonce++
+		args.Nonce = args.Nonce+1
 		signed, err := wallet.SignTx(account, tx, chainID)
 		if err != nil {
 			return common.Hash{}, err
